@@ -109,7 +109,7 @@ read_conf()
 	done
 	return 0;
 }
-read_conf $ZSHDIR/conf/
+read_conf $HOME/.gitconf/zsh/conf/
 
 # configure less, grep and konsorten
 eval $(dircolors -b)

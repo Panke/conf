@@ -1,0 +1,118 @@
+path+=/home/tobias/opt/d/bin
+
+emulate zsh
+
+# evironment variables for programs
+export EDITOR=${EDITOR:-vim}
+export BROWSER=${BROWSER:-chromium}
+export PAGER=${PAGER:-less}
+export SHELL='/bin/zsh'
+
+# environment variables for shell configuration
+export ZSHDIR=$HOME/.zsh
+
+
+# configure shell tools like less and grep
+# assume gnu tools are there
+
+## configure navigation 
+setopt auto_cd
+setopt auto_pushd
+setopt cdable_vars
+setopt pushd_ignore_dups
+setopt pushd_silent
+setopt no_pushd_to_home
+
+## configure history
+#use big history files
+HISTSIZE=10000
+SAVEHIST=12000
+HISTFILE=$HOME/.zsh/log/history
+
+setopt append_history
+setopt bang_hist # textual exp. of history using !
+setopt no_hist_beep
+setopt hist_ignore_dups
+setopt hist_ignore_space #don't save entries beginning with space
+setopt hist_no_functions
+setopt hist_no_store
+setopt hist_reduce_blanks
+setopt share_history
+
+## configure expansion and globbing
+setopt equals # =zsh expansion 
+setopt extended_glob
+setopt no_glob_assign
+setopt mark_dirs
+
+## configure input/output options
+setopt aliases
+setopt clobber
+setopt correct_all
+setopt no_flow_control
+setopt rm_star_wait
+setopt no_beep 
+setopt ignore_eof
+
+## make precmd, chpwd and postcmd configureable 
+typeset -gaU at_precmd
+typeset -gaU at_chpwd
+typeset -gaU at_postcmd
+
+precmd() 
+{
+	typeset -aU copy
+	copy=(${at_precmd})
+	unset at_precmd
+	for cmd in ${copy}; do
+		eval $cmd
+	done
+	typeset -gUa at_precmd
+	at_precmd=(${copy})
+}
+
+chpwd()
+{
+	typeset -aU copy
+	copy=(${at_chpwd})
+	unset at_chpwd
+	for cmd in ${copy}; do
+		eval $cmd
+	done
+	typeset -gUa at_precmd
+	at_chpwd=(${copy})
+}
+
+postcmd()
+{
+	typeset -a copy
+	copy=${at_postcmd}
+	unset at_postcmd
+	for cmd in ${copy}; do
+		eval $cmd
+	done
+	typeset -ga at_postcmd
+	at_postcmd=${copy}
+}
+
+## source files in $1
+read_conf()
+{
+	if [[ $# -lt 1 ]]; then
+		print -l "Wrong number of options"
+		return 1
+	fi
+	
+	files=($1/**/*.conf)
+	for file in $files; do
+		source $file
+	done
+	return 0;
+}
+read_conf $ZSHDIR/conf/
+
+# configure less, grep and konsorten
+eval $(dircolors -b)
+alias ls=' ls --color=auto'
+alias grep="grep --color=auto"
+

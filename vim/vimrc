@@ -1,0 +1,14 @@
+set number
+syntax on
+
+filetype plugin on
+let g:clang_user_options='|| exit 0'
+let g:clong_complete_copen = 1
+let g:clong_complete_auto = 1
+
+set tabstop=3
+set noexpandtab
+set copyindent
+set preserveindent
+set softtabstop=0
+set shiftwidth=3

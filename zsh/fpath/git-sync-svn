@@ -1,0 +1,20 @@
+setopt local_options
+setopt local_traps
+
+setopt err_exit
+setopt no_unset 
+
+
+svn_tracking_branch=master
+cur_branch=$(git rev-parse --abbrev-ref HEAD)
+print "Syncing [$cur_branch] with SVN on [$svn_tracking_branch]."
+
+git checkout $svn_tracking_branch
+git svn rebase
+git checkout $cur_branch
+git rebase $svn_tracking_branch
+git checkout $svn_tracking_branch
+git merge --ff-only $cur_branch
+git svn dcommit
+git checkout $cur_branch
+git rebase $svn_tracking_branch

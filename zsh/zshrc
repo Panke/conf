@@ -117,3 +117,5 @@ alias ls=' ls --color=auto'
 alias grep="grep --color=auto"
 alias nosyn="xinput list | grep Syn | grep -o -P "\d\d" | xargs xinput disable"
 
+export CVS_RSH=ssh
+

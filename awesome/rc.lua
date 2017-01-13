@@ -41,7 +41,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/home/tobias/.gitconf/awesome/default/theme.lua")
+beautiful.init("/home/panke/.gitconf/awesome/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "konsole"
